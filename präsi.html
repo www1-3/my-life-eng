@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Life in Twenty Years - Full Presentation</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right,#4e54c8,#8f94fb);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+#app {
+    max-width: 900px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+}
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #4e54c8;
+    font-weight: bold;
+}
+button:hover {background-color: #ddd;}
+#progress {margin-top: 20px; font-size: 18px;}
+.slide h1,h2,li,img {opacity:0; transform: translateX(200px) scale(0.6);}
+ul {
+    text-align:left;
+    display:inline-block;
+    font-size:22px;
+    margin:0 auto;
+    padding-left:20px;
+}
+li:hover {transform: scale(1.2); color: #ffd700; transition: all 0.3s ease;}
+img {
+    max-width:300px;
+    border-radius:12px;
+    margin:10px auto;
+    display:block;
+    box-shadow:0 0 15px #fff;
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+    <div id="slide-container"></div>
+    <div>
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+    </div>
+    <div id="progress"></div>
+</div>
+
+<script>
+// --- Slides with real thematic images ---
+const slidesData = [
+{
+    type: "title",
+    content: "My Life in Twenty Years\nBy Janis"
+},
+{
+    type: "list",
+    title: "My Job",
+    items: [
+        "I will have an amazing job!!!",
+        "I will work as a programmer!!!",
+        "I will love my job so much!!!",
+        "I will earn good money!!!"
+    ],
+    images: [
+        "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg",
+        "https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg",
+        "https://images.pexels.com/photos/1181619/pexels-photo-1181619.jpeg"
+    ]
+},
+{
+    type: "list",
+    title: "My Home",
+    items: [
+        "I will live in a modern house!!!",
+        "Maybe I will live in a big city like Berlin!!!",
+        "My home will be very comfortable!!!",
+        "I will have my own gaming room and office!!!"
+    ],
+    images: [
+        "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg",
+        "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
+        "https://images.pexels.com/photos/6135559/pexels-photo-6135559.jpeg"
+    ]
+},
+{
+    type: "list",
+    title: "My Family",
+    items: [
+        "Family will be very important to me!!!",
+        "I will have my own family!!!",
+        "I will be married!!!",
+        "I will have children!!!",
+        "I will still see my friends a lot!!!"
+    ],
+    images: [
+        "https://images.pexels.com/photos/1007023/pexels-photo-1007023.jpeg", // Ehepaar
+        "https://images.pexels.com/photos/325077/pexels-photo-325077.jpeg"     // Zwei Kinder
+    ]
+},
+{
+    type: "list",
+    title: "My Free Time",
+    items: [
+        "I will be super healthy!!!",
+        "I will do sports regularly!!!",
+        "I will travel to amazing countries!!!",
+        "I will see the world and enjoy it!!!"
+    ],
+    images: [
+        "https://images.pexels.com/photos/1181676/pexels-photo-1181676.jpeg", // Code / programmieren
+        "https://images.pexels.com/photos/7045556/pexels-photo-7045556.jpeg", // American Football Spieler
+        "https://images.pexels.com/photos/3661475/pexels-photo-3661475.jpeg"  // Spielen mit Kindern
+    ]
+},
+{
+    type: "list",
+    title: "Conclusion",
+    items: [
+        "In twenty years, I will be so happy!!!",
+        "I will work hard for my amazing dreams!!!",
+        "Thank you for listening!!!"
+    ],
+    images: [
+        "https://images.pexels.com/photos/207983/pexels-photo-207983.jpeg"
+    ]
+}
+];
+
+// --- JS logic ---
+let currentSlide = 0;
+const container = document.getElementById('slide-container');
+const progress = document.getElementById('progress');
+const bgColors = [
+    "#4e54c8,#8f94fb",
+    "#ff512f,#f09819",
+    "#00c6ff,#0072ff",
+    "#43e97b,#38f9d7",
+    "#ffafbd,#ffc3a0",
+    "#667eea,#764ba2"
+];
+
+function animateBackground() {
+    const c = bgColors[currentSlide % bgColors.length];
+    document.body.style.background = `linear-gradient(to right,${c})`;
+}
+
+function animateElements() {
+    const elems = container.querySelectorAll('h2,li,img');
+    elems.forEach((el,i)=> {
+        el.style.opacity=0;
+        el.style.transform="translateX(150px) scale(0.7)";
+        setTimeout(()=>{
+            el.style.transition="all 0.6s ease";
+            el.style.opacity=1;
+            el.style.transform="translateX(0) scale(1)";
+        }, i*300+200);
+    });
+}
+
+function renderSlide(index){
+    container.innerHTML="";
+    const slide = slidesData[index];
+    const div = document.createElement('div');
+    div.classList.add('slide','active');
+
+    if(slide.type==="title"){
+        const h1=document.createElement('h1');
+        h1.textContent=slide.content;
+        div.appendChild(h1);
+        container.appendChild(div);
+    } else {
+        const h2=document.createElement('h2');
+        h2.textContent=slide.title;
+        div.appendChild(h2);
+        const ul=document.createElement('ul');
+        slide.items.forEach(item=>{
+            const li=document.createElement('li');
+            li.textContent=item;
+            ul.appendChild(li);
+        });
+        div.appendChild(ul);
+
+        if(slide.images){
+            slide.images.forEach(src=>{
+                const img=document.createElement('img');
+                img.src=src;
+                div.appendChild(img);
+            });
+        }
+        container.appendChild(div);
+        animateElements();
+    }
+
+    progress.textContent=`Slide ${index+1} / ${slidesData.length}`;
+    animateBackground();
+}
+
+// --- Buttons + navigation ---
+document.getElementById('next').addEventListener('click',()=>{
+    if(currentSlide<slidesData.length-1) currentSlide++;
+    renderSlide(currentSlide);
+});
+document.getElementById('prev').addEventListener('click',()=>{
+    if(currentSlide>0) currentSlide--;
+    renderSlide(currentSlide);
+});
+document.addEventListener('keydown',e=>{
+    if(e.key==="ArrowRight" && currentSlide<slidesData.length-1){currentSlide++; renderSlide(currentSlide);}
+    if(e.key==="ArrowLeft" && currentSlide>0){currentSlide--; renderSlide(currentSlide);}
+});
+
+// Initial
+renderSlide(currentSlide);
+</script>
+
+</body>
+</html>
